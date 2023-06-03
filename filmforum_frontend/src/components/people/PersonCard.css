@@ -1,0 +1,16 @@
+.person-card {
+    cursor: pointer;
+    padding: 25px;
+    background: linear-gradient(rgba(44, 62, 80, 0.25), rgba(20, 30, 48, 0.75));
+    color: #ffffff;
+    transition: all 0.5s ease;
+}
+
+.person-card:hover {
+    transform: scale(1.05);
+}
+
+.person-name {
+    margin-top: 10px;
+    text-align: center;
+}

@@ -1,0 +1,59 @@
+.movie-details {
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+
+.movie-details img {
+    object-fit: cover;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.movie-details p {
+    margin-top: 10px;
+}
+
+.movie-details .MuiChip-root {
+    margin-right: 5px;
+    margin-top: 5px;
+    background-color: #2196f3;
+    color: white;
+}
+
+.movie-details .MuiButton-root {
+    background-color: #2196f3;
+    color: white;
+    margin-top: 10px;
+}
+
+.movie-details .MuiSlider-root {
+    color: #2196f3;
+}
+
+.movie-details .MuiSlider-thumb {
+    background-color: #2196f3;
+}
+
+.movie-details .MuiSlider-markLabel {
+    color: #2196f3;
+}
+
+.movie-details .MuiDialogContent-root {
+    background-color: #1e3b61;
+}
+
+.movie-details .MuiTextField-root {
+    margin-bottom: 10px;
+}
+
+
+
+.movie-details .cast {
+    align-items: center;
+}
+
+.movie-details .cast .MuiTypography-root {
+    margin-right: 10px;
+}

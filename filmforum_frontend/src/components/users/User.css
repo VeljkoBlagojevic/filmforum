@@ -1,0 +1,55 @@
+.user-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.user-info {
+    margin-bottom: 32px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.user-info h6 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.user-info p {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.watchlist,
+.review-list {
+    margin-top: 32px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.watchlist h6,
+.review-list h6 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+.movie-card-container {
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    font-size: 18px;
+    font-weight: bold;
+}

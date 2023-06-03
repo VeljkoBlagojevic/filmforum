@@ -1,0 +1,33 @@
+.my-page-container {
+    background-color: #293742;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.user-info {
+    margin-bottom: 20px;
+}
+
+.user-info > * {
+    margin-bottom: 10px;
+}
+
+.watchlist {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+}
+
+.movie-card-container {
+    margin: 10px;
+}
+
+.review-list {
+    margin-top: 20px;
+}
+
+.review-list > :not(:last-child) {
+    margin-bottom: 20px;
+}

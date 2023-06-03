@@ -1,0 +1,39 @@
+.person-details-container {
+    margin-bottom: 20px;
+}
+
+.person-info {
+    background-color: rgb(20, 30, 48);
+    color: white;
+}
+
+.person-movie-card-container {
+    display: flex;
+    flex-direction: row;
+
+
+}
+
+.person-details-container .MuiCardMedia-root {
+    margin-right: 20px;
+}
+
+
+.person-details-container .person-name {
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.person-details-container .person-details {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: white;
+
+}
+
+.person-details-container .person-biography {
+    font-size: 16px;
+    color: white;
+
+}
