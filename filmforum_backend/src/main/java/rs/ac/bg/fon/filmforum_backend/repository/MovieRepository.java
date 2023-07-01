@@ -12,5 +12,6 @@ import java.util.Collection;
 
 @Repository
 public interface MovieRepository extends JpaRepository<Movie, Long> {
+    Page<Movie> findByTitleContainsIgnoreCase(String title, Pageable pageable);
     Page<Movie> findByGenresIn(Collection<Genre> genres, Pageable pageable);
 }

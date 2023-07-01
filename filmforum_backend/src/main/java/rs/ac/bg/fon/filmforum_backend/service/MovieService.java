@@ -27,6 +27,14 @@ public class MovieService {
         return movieRepository.findAll(pageable);
     }
 
+    public Page<Movie> getByTitle(String title, Pageable pageable) {
+        if(title == null) {
+            return getAll(pageable);
+        } else {
+            return movieRepository.findByTitleContainsIgnoreCase(title, pageable);
+        }
+    }
+
     public Movie getById(Long id) {
         return movieRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
@@ -47,4 +55,5 @@ public class MovieService {
         movieFromDatabase.setRuntime(movie.getRuntime());
         return movieRepository.save(movieFromDatabase);
     }
+
 }

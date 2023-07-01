@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
-import {MovieDTO} from '../../domain/MovieDTO';
+import React, { useEffect, useState } from 'react';
+import { MovieDTO } from '../../domain/MovieDTO';
 import axios from 'axios';
 import MovieCardComponent from './MovieCardComponent';
-import {Button} from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import './Movies.css';
 
 const MoviesComponent = () => {
     const [movies, setMovies] = useState<MovieDTO[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [totalPages, setTotalPages] = useState<number>(0);
+    const [searchTerm, setSearchTerm] = useState<string>('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,6 +18,7 @@ const MoviesComponent = () => {
                     params: {
                         size: 5,
                         page: currentPage,
+                        title: searchTerm, // Pass the search term as a parameter
                     },
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -30,7 +32,7 @@ const MoviesComponent = () => {
         };
 
         fetchData();
-    }, [currentPage]);
+    }, [currentPage, searchTerm]);
 
     const nextPage = () => {
         setCurrentPage((currentPage) => currentPage + 1);
@@ -40,8 +42,25 @@ const MoviesComponent = () => {
         setCurrentPage((currentPage) => currentPage - 1);
     };
 
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    };
+
     return (
         <div>
+            <div className="search-container">
+                <TextField
+                    label="Search by title"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    variant="outlined"
+                />
+            </div>
+            <div className="movies-container">
+                {movies.map((movie) => (
+                    <MovieCardComponent movie={movie} key={movie.id} />
+                ))}
+            </div>
             <div className="pagination">
                 <Button
                     onClick={previousPage}
@@ -57,9 +76,6 @@ const MoviesComponent = () => {
                 >
                     Next
                 </Button>
-            </div>
-            <div className="movies-container">
-                {movies.map((movie) => <MovieCardComponent movie={movie} key={movie.id}/>)}
             </div>
         </div>
     );

@@ -21,8 +21,8 @@ public class MovieController {
     private final MovieMapper movieMapper;
 
     @GetMapping
-    public Page<MovieDTO> getAllMovies(Pageable pageable) {
-        return movieService.getAll(pageable).map(movieMapper::mapToDTO);
+    public Page<MovieDTO> getMovies(@RequestParam(required = false) String title, Pageable pageable) {
+        return movieService.getByTitle(title, pageable).map(movieMapper::mapToDTO);
     }
 
     @GetMapping("/{id}")

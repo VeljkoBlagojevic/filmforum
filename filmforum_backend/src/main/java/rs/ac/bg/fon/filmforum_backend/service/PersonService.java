@@ -23,6 +23,14 @@ public class PersonService {
         return personRepository.findAll(pageable);
     }
 
+    public Page<Person> getByName(String name, Pageable pageable) {
+        if(name == null) {
+            return getAll(pageable);
+        } else {
+            return personRepository.findByNameContainsIgnoreCase(name, pageable);
+        }
+    }
+
     public Person getById(Long id) {
         return personRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }

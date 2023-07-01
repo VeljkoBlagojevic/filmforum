@@ -22,8 +22,9 @@ public class PersonController {
     private final MovieMapper movieMapper;
 
     @GetMapping
-    public Page<PersonDTO> getAll(Pageable pageable) {
-        return personService.getAll(pageable).map(personMapper::mapToDTO);
+    public Page<PersonDTO> getAll(@RequestParam(required = false) String name, Pageable pageable) {
+
+            return personService.getByName(name, pageable).map(personMapper::mapToDTO);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +33,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}/movies")
-    public Page<MovieDTO> getMoviesByActor(@PathVariable Long id, Pageable pageable) {
+    public Page<MovieDTO> getMoviesByPerson(@PathVariable Long id, Pageable pageable) {
         return personService.getMoviesByPersonId(id, pageable).map(movieMapper::mapToDTO);
     }
 }
