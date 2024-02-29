@@ -15,6 +15,7 @@ public class UserMapper implements DTOMapper<User, UserDTO> {
                 .username(userDTO.username())
                 .email(userDTO.email())
                 .role(userDTO.role())
+                .profilePictureUri(userDTO.profilePictureUri())
                 .build();
     }
 
@@ -26,7 +27,8 @@ public class UserMapper implements DTOMapper<User, UserDTO> {
                 entity.getLastname(),
                 entity.getEmail(),
                 entity.getUsername(),
-                entity.getRole()
+                entity.getRole(),
+                entity.getProfilePictureUri()
         );
     }
 }

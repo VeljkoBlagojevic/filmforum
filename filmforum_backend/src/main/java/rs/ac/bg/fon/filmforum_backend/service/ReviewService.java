@@ -34,6 +34,7 @@ public class ReviewService {
     public List<Review> getReviewsByMovieId(Long movieId) {
         return reviewRepository.findByMovieId(movieId);
     }
+
     public Page<Review> getReviewsByMovieId(Long movieId, Pageable pageable) {
         return reviewRepository.findByMovieId(movieId, pageable);
     }
@@ -48,7 +49,7 @@ public class ReviewService {
 
     public Review createReview(Review review) {
         User currentlyLoggedInUser = userService.getCurrentlyLoggedInUser();
-        if(!currentlyLoggedInUser.getRole().equals(Role.CRITIC)) {
+        if (!currentlyLoggedInUser.getRole().equals(Role.CRITIC)) {
             throw new IllegalArgumentException("You are not logged in as critic");
         }
         review.setAuthor(currentlyLoggedInUser);
@@ -57,14 +58,14 @@ public class ReviewService {
     }
 
     public void deleteReview(Long id) {
-        if(reviewRepository.existsById(id)) {
+        if (reviewRepository.existsById(id)) {
             reviewRepository.deleteById(id);
         }
     }
 
     public Review updateReview(Long id, Review review) {
         User currentlyLoggedInUser = userService.getCurrentlyLoggedInUser();
-        if(!currentlyLoggedInUser.getRole().equals(Role.CRITIC)) {
+        if (!currentlyLoggedInUser.getRole().equals(Role.CRITIC)) {
             throw new IllegalArgumentException("You are not logged in as critic");
         }
 
