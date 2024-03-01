@@ -19,7 +19,7 @@ export const Movies = () => {
           params: {
             size: 5,
             page: currentPage,
-            title: searchTerm, // Pass the search term as a parameter
+            title: searchTerm,
           },
           headers: {
             Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
@@ -67,11 +67,13 @@ export const Movies = () => {
           title="Previous"
           onPress={previousPage}
           disabled={currentPage === 0}
+          color="#8D89CA"
         />
         <Button
           title="Next"
           onPress={nextPage}
           disabled={currentPage === totalPages - 1}
+          color="#8D89CA"
         />
       </View>
     </View>
@@ -85,12 +87,18 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 20,
     paddingVertical: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   input: {
+    flex: 1,
     height: 40,
-    borderColor: "gray",
+    borderColor: "#8D89CA",
     borderWidth: 1,
     paddingHorizontal: 10,
+    marginRight: 10,
+    borderRadius: 5,
   },
   moviesContainer: {
     flex: 1,

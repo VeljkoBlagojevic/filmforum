@@ -24,7 +24,7 @@ import UpdateMovieModal from "./actions/UpdateMovieModal";
 import AddReviewModal from "./actions/AddReviewModal";
 import { UpdateReviewModal } from "./actions/UpdateReviewModal";
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const route = useRoute();
   const { movieID } = route.params as { movieID: number }; // Adjust the type as per your movieID type
 
@@ -160,98 +160,169 @@ export const MovieDetails = () => {
   }, [movieID]);
 
   return (
-    <ScrollView>
-      <Text style={{ fontSize: 24 }}>{movie?.title}</Text>
-      {movie && (
-        <>
-          {movie?.backdropPath && (
-            <Image
-              style={{ width: "100%", height: 200 }}
-              source={{ uri: movie?.backdropPath }}
-            />
-          )}
-        </>
-      )}
-      <View>
-        <Text style={{ fontSize: 20 }}>Tagline: {movie?.tagline}</Text>
-
-        <Button
-          title="IMDb"
-          onPress={() => Linking.openURL(movie?.imdb ?? "imdb.com")}
-        />
-
-        <Text>
-          Genres:{" "}
-          {movie?.genres && movie?.genres.length > 0
-            ? movie?.genres.map((genre) => (
-                <Chip
-                  key={genre.id}
-                  style={{ margin: 4 }}
-                  avatar={
-                    <Avatar.Text size={24} label={genre.name.substring(0, 1)} />
-                  }
-                  onPress={() =>
-                    navigation.navigate("GenreScreen", { genreID: genre.id })
-                  }
-                >
-                  {genre.name}
-                </Chip>
-              ))
-            : "No genres found"}
-        </Text>
-        <Text>Release Date: {movie?.releaseDate}</Text>
-        <Text>{movie?.overview}</Text>
-
-        {movie?.homepage && (
-          <Button
-            title="HomePage"
-            onPress={() => Linking.openURL(movie?.homepage)}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.card}>
+        <Text style={styles.title}>{movie?.title}</Text>
+        {movie && movie?.backdropPath && (
+          <Image
+            style={styles.image}
+            source={{ uri: movie?.backdropPath }}
           />
         )}
-
-        <Text>Budget: ${movie?.budget}</Text>
-        <Text>Runtime: {movie?.runtime} minutes</Text>
-
-        {movie?.cast && (
-          <View>
-            <Text style={{ fontSize: 24 }}>Cast</Text>
-            <Cast cast={movie.cast} />
-          </View>
-        )}
-
-        {movie?.crew && (
-          <View>
-            <Text style={{ fontSize: 24 }}>Crew</Text>
-            <Crew crew={movie.crew} />
-          </View>
-        )}
+        <View style={styles.detailsContainer}>
+          <Text style={styles.subtitle}>{movie?.tagline}</Text>
+          <Button
+            title="IMDb"
+            onPress={() => Linking.openURL(movie?.imdb ?? "https://www.imdb.com/")}
+            color="#4682B4"
+          />
+          <Text style={styles.text}>
+            Genres:{" "}
+            {movie?.genres && movie?.genres.length > 0 ? (
+              <View style={styles.genreContainer}>
+                {movie?.genres.map((genre) => (
+                  <Chip
+                    key={genre.id}
+                    style={styles.chip}
+                    avatar={
+                      <Avatar.Text size={20} label={genre.name.substring(0, 1)} />
+                    }
+                    onPress={() =>
+                      navigation.navigate("GenreScreen", { genreID: genre.id })
+                    }
+                  >
+                    {genre.name}
+                  </Chip>
+                ))}
+              </View>
+            ) : (
+              <Text>No genres found</Text>
+            )}
+          </Text>
+          <Text style={styles.text}>Release Date: {movie?.releaseDate}</Text>
+          <Text style={styles.overview}>{movie?.overview}</Text>
+          {movie?.homepage && (
+            <Button
+              title="Homepage"
+              onPress={() => Linking.openURL(movie?.homepage)}
+              color="#4682B4"
+            />
+          )}
+          <Text style={styles.text}>Budget: ${movie?.budget}</Text>
+          <Text style={styles.text}>Runtime: {movie?.runtime} minutes</Text>
+          {movie?.cast && (
+            <>
+              <Text style={styles.subtitle}>Cast</Text>
+              <Cast cast={movie.cast} />
+            </>
+          )}
+          {movie?.crew && (
+            <>
+              <Text style={styles.subtitle}>Crew</Text>
+              <Crew crew={movie.crew} />
+            </>
+          )}
+        </View>
       </View>
       <MovieReviewStatistics movieID={movieID} />
-
       {currentUser?.role === "USER" && (
-        <>
-          {/* Add/Remove from watchlist */}
+        <View style={styles.buttonContainer}>
           {isInMyWatchlist ? (
             <Button
               onPress={removeFromWatchlist}
               title="Remove from watchlist"
+              color="#FF6347"
             />
           ) : (
-            <Button onPress={addToWatchlist} title="Add to Watchlist" />
+            <Button
+              onPress={addToWatchlist}
+              title="Add to Watchlist"
+              color="#4682B4"
+            />
+          )}
+        </View>
+      )}
+      {currentUser?.role === "CRITIC" && (
+        <>
+          {isReviewed ? (
+            <UpdateReviewModal review={review} setReview={setReview} />
+          ) : (
+            <AddReviewModal movie={movie} />
           )}
         </>
       )}
-
-      {currentUser?.role === "CRITIC" &&
-        (isReviewed ? (
-          <UpdateReviewModal review={review} setReview={setReview} />
-        ) : (
-          <AddReviewModal movie={movie} />
-        ))}
-
       {currentUser?.role === "ADMIN" && (
         <UpdateMovieModal movie={movie} setMovie={setMovie} />
       )}
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: "#f0f0f0",
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    color: "#333",
+  },
+  image: {
+    width: "100%",
+    height: 200,
+    marginBottom: 10,
+    borderRadius: 10,
+  },
+  detailsContainer: {
+    marginBottom: 20,
+  },
+  subtitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 5,
+    color: "#555",
+  },
+  text: {
+    marginBottom: 5,
+    color: "#666",
+  },
+  overview: {
+    marginBottom: 10,
+    color: "#777",
+    fontSize: 14,
+  },
+  genreContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginBottom: 5,
+  },
+  chip: {
+    margin: 4,
+    fontSize: 10,
+    width: 100,
+    height: 30,
+    backgroundColor: "#f0f0f0",
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
+});
+
+export default MovieDetails;

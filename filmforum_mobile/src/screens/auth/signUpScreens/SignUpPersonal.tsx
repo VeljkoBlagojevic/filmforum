@@ -10,21 +10,19 @@ import {
 } from 'react-native';
 import { useValidInformation } from '../../../services/api';
 
-export const cities = ['Beograd', 'Novi Sad', 'Nis'];
 interface Props {
   setName: (value: string) => void;
   setSurname: (value: string) => void;
 }
 
-function validateAll(name: String, surname: String) {
-  let errorMsg: String = '';
+function validateAll(name: string, surname: string) {
+  let errorMsg: string = '';
 
   if (name.length < 2) {
-    errorMsg = errorMsg + ' Morate uneti ime koje ima minimum 2 karaktera.\n';
+    errorMsg = errorMsg + 'Name must have at least 2 characters.\n';
   }
   if (surname.length < 2) {
-    errorMsg =
-      errorMsg + ' Morate uneti prezime koje ima minimum 2 karaktera.\n';
+    errorMsg = errorMsg + 'Surname must have at least 2 characters.\n';
   }
 
   return errorMsg;
@@ -47,14 +45,14 @@ function SignUpPersonal(props: Props) {
       props.setSurname(surname);
       setValue(true);
     } else {
-      Alert.alert(validationMsg.valueOf());
+      Alert.alert(validationMsg);
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.groupedElements}>
-        <Text style={styles.text}>Insert your firstname:</Text>
+        <Text style={styles.text}>Insert your first name:</Text>
         <TextInput
           clearTextOnFocus
           value={name}
@@ -63,7 +61,7 @@ function SignUpPersonal(props: Props) {
         />
       </View>
       <View style={styles.groupedElements}>
-        <Text style={styles.text}>Insert your lastname:</Text>
+        <Text style={styles.text}>Insert your last name:</Text>
         <TextInput
           clearTextOnFocus
           value={surname}
@@ -79,13 +77,10 @@ function SignUpPersonal(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
-    height: 400,
+    paddingHorizontal: 20,
     marginTop: '15%',
-    paddingTop: 10,
   },
   text: {
     fontSize: 16,
@@ -97,10 +92,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderColor: '#8D89CA',
     height: 30,
+    width: '100%',
   },
   groupedElements: {
-    height: 70,
-    width: 250,
+    marginBottom: 20,
+    width: '100%',
+  },
+  button: {
+    width: '100%',
+    backgroundColor: '#8D89CA',
+    marginTop: 20,
   },
 });
+
 export default SignUpPersonal;

@@ -3,10 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { LogIn } from "./src/screens/auth/Login";
 import SignUp from "./src/screens/auth/SignUp";
 import { Movies } from "./src/screens/movies/Movies";
-import { MovieDetails } from "./src/screens/movies/MovieDetails";
 import { GenreScreen } from "./src/screens/genres/Genre";
-import { PersonDetails } from "./src/screens/people/PersonDetails";
-import { UserProfileScreen } from "./src/screens/people/UserPage";
+import PersonDetails from "./src/screens/people/PersonDetails";
+import UserProfileScreen from "./src/screens/people/UserPage";
+import MovieDetails from "./src/screens/movies/MovieDetails";
 
 const Stack = createStackNavigator();
 

@@ -25,18 +25,29 @@ export const PersonCard: React.FC<PersonCardComponentProps> = ({ person }) => {
 const styles = StyleSheet.create({
   personCard: {
     padding: 10,
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   personImage: {
+    borderRadius: 10,
     width: 100,
     height: 100,
-    borderRadius: 50,
   },
   personName: {
     marginTop: 5,
     fontSize: 16,
     fontWeight: "bold",
+    color: "#333333",
   },
 });
+
+export default PersonCard;

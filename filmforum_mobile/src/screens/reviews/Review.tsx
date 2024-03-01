@@ -22,13 +22,14 @@ export const Review: React.FC<ReviewComponentProps> = ({
     <View style={styles.reviewContainer}>
       <Text style={styles.reviewContent}>{review.content}</Text>
       <View style={styles.reviewRating}>
-        <Text>Rating: </Text>
+        <Text style={styles.ratingText}>Rating: </Text>
         <Rating
           startingValue={review.rating}
           readonly
           fractions={1}
           imageSize={20}
           ratingCount={10}
+          style={styles.ratingStars}
         />
       </View>
       <Text style={styles.reviewDate}>Reviewed on: {review.date}</Text>
@@ -41,9 +42,9 @@ export const Review: React.FC<ReviewComponentProps> = ({
         >
           <Image
             source={{ uri: review?.author?.profilePictureUri }}
-            style={{ width: 50, height: 50, borderRadius: 20 }}
+            style={styles.authorImage}
           />
-          <Text>
+          <Text style={styles.authorName}>
             Author: {review.author.firstname} {review.author.lastname}
           </Text>
         </TouchableOpacity>
@@ -59,29 +60,54 @@ export const Review: React.FC<ReviewComponentProps> = ({
 
 const styles = StyleSheet.create({
   reviewContainer: {
-    width: 500,
-    padding: 10,
+    width: "100%",
+    padding: 15,
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 10,
+    borderRadius: 8,
+    marginBottom: 20,
+    backgroundColor: "#fff",
   },
   reviewContent: {
     marginBottom: 10,
+    fontSize: 16,
+    lineHeight: 22,
   },
   reviewRating: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
   },
+  ratingText: {
+    marginRight: 5,
+    fontSize: 16,
+  },
+  ratingStars: {
+    marginBottom: 5,
+  },
   reviewDate: {
     marginBottom: 10,
+    fontSize: 14,
+    color: "#888",
   },
   reviewAuthor: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
-    color: "blue",
+  },
+  authorImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 10,
+  },
+  authorName: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
   reviewMovie: {
     marginBottom: 10,
   },
 });
+
+export default Review;

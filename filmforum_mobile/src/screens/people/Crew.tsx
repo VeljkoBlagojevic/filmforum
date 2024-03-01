@@ -1,13 +1,13 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { CrewMemberDTO } from "../../domain/CrewMemberDTO";
 import { CrewMemberCard } from "./CrewMemberCard";
 
 interface CrewComponentProps {
-    crew: CrewMemberDTO[];
+  crew: CrewMemberDTO[];
 }
 
-export const Crew = ({ crew }: CrewComponentProps) => {
+export const Crew: React.FC<CrewComponentProps> = ({ crew }) => {
   const renderItem = ({ item }: { item: CrewMemberDTO }) => (
     <CrewMemberCard crewMember={item} />
   );
@@ -18,6 +18,15 @@ export const Crew = ({ crew }: CrewComponentProps) => {
       data={crew}
       renderItem={renderItem}
       keyExtractor={(actor) => actor.creditId}
+      contentContainerStyle={styles.flatList}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  flatList: {
+    paddingHorizontal: 10,
+  },
+});
+
+export default Crew;

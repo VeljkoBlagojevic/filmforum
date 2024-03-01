@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import Stepper from "react-native-stepper-ui";
 import SignUpAccount from "./signUpScreens/SignUpAccount";
 import SignUpPersonal from "./signUpScreens/SignUpPersonal";
@@ -52,6 +52,7 @@ function SignUp() {
     />,
     <SignUpSubmit setImage={(image) => setImage(image)} />,
   ];
+
   const handleFinish = async () => {
     const registerRequest: ReqisterRequest = {
       firstname: name,
@@ -68,24 +69,48 @@ function SignUp() {
 
   return (
     <IsValidContext.Provider value={{ value, setValue }}>
-      <SafeAreaView>
-        <Stepper
-          active={step}
-          content={content}
-          onNext={() => setStep((p) => p + 1)}
-          onBack={() => setStep((p) => p - 1)}
-          onFinish={handleFinish}
-          wrapperStyle={styles.wrappper}
-          stepStyle={styles.stepStyle}
-          showButton={value}
-          buttonStyle={styles.button}
-          buttonTextStyle={{ alignSelf: "center" }}
-        />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.stepperContainer}>
+          <Stepper
+            active={step}
+            content={content}
+            onNext={() => setStep((p) => p + 1)}
+            onBack={() => setStep((p) => p - 1)}
+            onFinish={handleFinish}
+            wrapperStyle={styles.wrappper}
+            stepStyle={styles.stepStyle}
+            showButton={value}
+            buttonStyle={styles.button}
+            buttonTextStyle={{ alignSelf: "center" }}
+          />
+        </View>
       </SafeAreaView>
     </IsValidContext.Provider>
   );
 }
+
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  stepperContainer: {
+    width: "80%",
+    height: 600,
+    margin: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: "#fff",
+  },
   wrappper: {
     color: "#38393E",
     margin: 5,
@@ -99,9 +124,10 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "column",
     justifyContent: "center",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: 80,
+    width: 100,
+    paddingVertical: 12,
+    backgroundColor: "#8D89CA",
   },
 });
+
 export default SignUp;

@@ -1,5 +1,5 @@
 import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { ActorDTO } from "../../domain/ActorDTO";
 import { ActorCard } from "./ActorCard";
 
@@ -18,6 +18,13 @@ export const Cast = ({ cast }: CastComponentProps) => {
       data={cast}
       renderItem={renderItem}
       keyExtractor={(actor) => actor.creditId}
+      contentContainerStyle={styles.flatList}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  flatList: {
+    paddingHorizontal: 10,
+  },
+});

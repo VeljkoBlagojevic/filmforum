@@ -8,9 +8,9 @@ import {
   Button,
   Alert,
 } from "react-native";
-import { useValidInformation } from "../../../services/api";
 import SelectDropdown from "react-native-select-dropdown";
 import { Role } from "../../../domain/Role";
+import { useValidInformation } from "../../../services/api";
 
 const roles: Role[] = [Role.USER, Role.CRITIC];
 
@@ -29,21 +29,20 @@ function validateAll(
 ) {
   let errorMsg: string = "";
 
-  if (!validateEmail) {
-    errorMsg = errorMsg + " Email andresa nije validna";
+  if (!validateEmail(email)) {
+    errorMsg = "Email address is not valid.";
   }
   if (email.length < 6) {
-    errorMsg =
-      errorMsg + " Email andresa nije validna. Mora imati vise od 6 karaktera.";
+    errorMsg = "Email address must be at least 6 characters.";
   }
-  if (username === "" && username.length === 0) {
-    errorMsg = errorMsg + " Username nije dobro unesen.";
+  if (username === "" || username.length === 0) {
+    errorMsg = "Username is not valid.";
   }
   if (password !== passwordAgain) {
-    errorMsg = errorMsg + " Unete lozinke se ne poklapaju.";
+    errorMsg = "Passwords do not match.";
   }
   if (password.length < 6) {
-    errorMsg = errorMsg + " Lozinka mora imati vise od 6 karaktera.";
+    errorMsg = "Password must be at least 6 characters.";
   }
 
   return errorMsg;
@@ -64,10 +63,15 @@ function SignUpAccount(props: Props) {
   const [role, setRole] = useState<Role>(Role.USER);
 
   const { setValue } = useValidInformation();
-  // const { value, setValue } = useValidInformation();
 
   const handleValidation = () => {
-    let validationMsg = validateAll(email, password, passwordAgain, username, role);
+    let validationMsg = validateAll(
+      email,
+      password,
+      passwordAgain,
+      username,
+      role
+    );
     if (validationMsg === "") {
       props.setEmail(email);
       props.setUsername(username);
@@ -75,15 +79,15 @@ function SignUpAccount(props: Props) {
       props.setRole(role);
       setValue(true);
     } else {
-      Alert.alert(validationMsg.valueOf());
-      setValue(false);
+      Alert.alert(validationMsg);
     }
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.headline}>Welcome!</Text>
-      <View style={styles.groupedElements}>
-        <Text style={styles.text}>Insert your email address:</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Email Address:</Text>
         <TextInput
           clearTextOnFocus
           value={email}
@@ -91,8 +95,8 @@ function SignUpAccount(props: Props) {
           style={styles.inputText}
         />
       </View>
-      <View style={styles.groupedElements}>
-        <Text style={styles.text}>Insert your username:</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Username:</Text>
         <TextInput
           clearTextOnFocus
           value={username}
@@ -100,8 +104,8 @@ function SignUpAccount(props: Props) {
           style={styles.inputText}
         />
       </View>
-      <View style={styles.groupedElements}>
-        <Text style={styles.text}>Insert your password:</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Password:</Text>
         <TextInput
           clearTextOnFocus
           value={password}
@@ -110,8 +114,8 @@ function SignUpAccount(props: Props) {
           secureTextEntry={true}
         />
       </View>
-      <View style={styles.groupedElements}>
-        <Text style={styles.text}>Repeat password:</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Repeat Password:</Text>
         <TextInput
           clearTextOnFocus
           value={passwordAgain}
@@ -120,16 +124,24 @@ function SignUpAccount(props: Props) {
           secureTextEntry={true}
         />
       </View>
-      <View style={styles.groupedElements}>
-        <Text style={styles.text}>Role:</Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.label}>Role:</Text>
         <SelectDropdown
           data={roles}
           onSelect={(selectedItem, index) => {
             setRole(selectedItem);
           }}
+          buttonTextAfterSelection={(selectedItem, index) => {
+            return selectedItem;
+          }}
+          buttonStyle={styles.selectButton}
+          buttonTextStyle={styles.selectButtonText}
+          dropdownStyle={styles.dropdown}
+          rowStyle={styles.dropdownRow}
+          rowTextStyle={styles.dropdownText}
         />
       </View>
-      <Button title="Check data!" onPress={() => handleValidation()} />
+      <Button title="Validate" onPress={() => handleValidation()} />
     </SafeAreaView>
   );
 }
@@ -137,34 +149,56 @@ function SignUpAccount(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignContent: "center",
+    justifyContent: "center",
     alignItems: "center",
-    height: 500,
-    marginTop: 20,
+    paddingHorizontal: 20,
+    backgroundColor: "#fff",
   },
   headline: {
     fontWeight: "bold",
-    fontSize: 20,
-    color: "#8D89CA",
-    marginBottom: "10%",
-    marginTop: "10%",
+    fontSize: 24,
+    color: "#333",
+    marginBottom: 20,
   },
-  text: {
+  inputContainer: {
+    width: "100%",
+    marginBottom: 20,
+  },
+  label: {
     fontSize: 16,
-    color: "#8D89CA",
+    color: "#333",
     fontWeight: "bold",
-    marginBottom: 3,
+    marginBottom: 5,
   },
   inputText: {
     borderBottomWidth: 2,
     borderColor: "#8D89CA",
-    height: 30,
+    height: 40,
+    paddingHorizontal: 10,
   },
-  groupedElements: {
-    height: 70,
-    width: 280,
+  selectButton: {
+    borderWidth: 2,
+    borderColor: "#8D89CA",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+  },
+  selectButtonText: {
+    color: "#8D89CA",
+    fontWeight: "bold",
+  },
+  dropdown: {
+    borderWidth: 2,
+    borderColor: "#8D89CA",
+    borderRadius: 5,
+  },
+  dropdownRow: {
+    paddingVertical: 10,
+  },
+  dropdownText: {
+    color: "#8D89CA",
+    fontWeight: "bold",
   },
 });
+
 export default SignUpAccount;

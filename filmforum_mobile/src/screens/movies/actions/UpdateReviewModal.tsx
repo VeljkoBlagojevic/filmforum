@@ -25,10 +25,8 @@ export const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
   setReview,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-
-  const [updateReviewContent, setUpdateReviewContent] = useState<string>();
-  const [updateReviewRating, setUpdateReviewRating] = useState<number>();
-
+  const [updateReviewContent, setUpdateReviewContent] = useState<string>("");
+  const [updateReviewRating, setUpdateReviewRating] = useState<number>(0);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
 
   async function handleUpdateReview() {
     const updatedReview = {
-      ...review,
+      ...review!,
       content: updateReviewContent,
       rating: updateReviewRating,
     };
@@ -68,29 +66,43 @@ export const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
   }
 
   return (
-    <View style={styles.groupedElements}>
-      <Button onPress={handleClickOpen} title="Update Review" />
-      <Modal visible={open} onDismiss={handleClose}>
-        <Text style={styles.headline}>Update Review</Text>
-        <View>
-          <Text>Content:</Text>
-          <TextInput
-            style={styles.inputText}
-            multiline
-            numberOfLines={4}
-            value={updateReviewContent}
-            defaultValue={review?.content}
-            onChangeText={setUpdateReviewContent}
-          />
-          <Rating
-            type="star"
-            ratingCount={10}
-            startingValue={review?.rating}
-            onFinishRating={setUpdateReviewRating}
-          />
+    <View style={styles.container}>
+      <Button onPress={handleClickOpen} title="Update Review" color="#8D89CA" />
+      <Modal visible={open} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.headline}>Update Review</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Content:</Text>
+            <TextInput
+              style={styles.inputText}
+              multiline
+              numberOfLines={4}
+              value={updateReviewContent}
+              onChangeText={setUpdateReviewContent}
+            />
+            <Text style={styles.label}>Rating:</Text>
+            <Rating
+              type="star"
+              ratingCount={10}
+              startingValue={updateReviewRating}
+              onFinishRating={setUpdateReviewRating}
+              imageSize={30}
+              style={{ paddingVertical: 10 }}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Cancel"
+              onPress={handleClose}
+              color="#8D89CA"
+            />
+            <Button
+              title="Update"
+              onPress={handleUpdateReview}
+              color="#8D89CA"
+            />
+          </View>
         </View>
-        <Button title="Cancel" onPress={handleClose} />
-        <Button title="Update" onPress={handleUpdateReview} />
       </Modal>
     </View>
   );
@@ -99,31 +111,43 @@ export const UpdateReviewModal: React.FC<UpdateReviewModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignContent: "center",
+    justifyContent: "center",
     alignItems: "center",
-    height: 500,
-    marginTop: 20,
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    margin: 50,
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
   },
   headline: {
     fontWeight: "bold",
     fontSize: 20,
     color: "#8D89CA",
-    marginBottom: "10%",
-    marginTop: "10%",
+    marginBottom: 10,
+    textAlign: "center",
   },
-  text: {
+  inputContainer: {
+    marginBottom: 20,
+  },
+  label: {
     fontSize: 16,
+    marginBottom: 5,
     color: "#8D89CA",
     fontWeight: "bold",
   },
   inputText: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderColor: "#8D89CA",
+    marginBottom: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
   },
-  groupedElements: {
-    height: 70,
-    width: 280,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
+
+export default UpdateReviewModal;

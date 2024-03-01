@@ -9,6 +9,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { BASE_URL } from "../../constants/Urls";
@@ -16,18 +17,6 @@ import { BASE_URL } from "../../constants/Urls";
 export const LogIn = () => {
   const navigation = useNavigation();
 
-  // const [username, setUsername] = useState<string>("Djoka1");
-  // const [pass, setPass] = useState<string>("Djoka1");
-
-  //user
-  // const [username, setUsername] = useState<string>("anjica");
-  // const [pass, setPass] = useState<string>("anjica");
-
-  //admin
-  // const [username, setUsername] = useState<string>("admin");
-  // const [pass, setPass] = useState<string>("admin");
-
-  //critic
   const [username, setUsername] = useState<string>("veljko");
   const [pass, setPass] = useState<string>("veljko");
 
@@ -49,33 +38,37 @@ export const LogIn = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.headline}>Welcome to movie database!</Text>
-      <View>
-        <View style={styles.groupedElements}>
-          <Text style={styles.text}>Username:</Text>
+      <Text style={styles.headline}>Welcome to Movie Database!</Text>
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Username</Text>
           <TextInput
-            style={styles.inputText}
+            style={styles.input}
             onChangeText={(value) => setUsername(value)}
           />
         </View>
-        <View style={styles.groupedElements}>
-          <Text style={styles.text}>Password:</Text>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
           <TextInput
-            style={styles.inputText}
+            style={styles.input}
             onChangeText={(value) => setPass(value)}
             secureTextEntry={true}
           />
         </View>
-        <Button
-          title="Login"
-          onPress={() => {
-            loginFunction(username, pass);
-          }}
-        />
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={() => loginFunction(username, pass)}
+        >
+          <Text style={styles.loginButtonText}>Log In</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <Text style={styles.helpText}>Don't have an account? </Text>
-        <Button title="SignUp" onPress={() => navigation.navigate("SignUp")} />
+      <View style={styles.signupContainer}>
+        <Text style={styles.helpText}>Don't have an account?</Text>
+        <Button
+          title="Sign Up"
+          onPress={() => navigation.navigate("SignUp")}
+          color="#8D89CA"
+        />
       </View>
     </SafeAreaView>
   );
@@ -84,42 +77,63 @@ export const LogIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignContent: "center",
+    justifyContent: "center",
     alignItems: "center",
-    height: 400,
-    marginTop: 20,
+    backgroundColor: "#f0f0f0",
   },
   headline: {
     fontWeight: "bold",
-    fontSize: 20,
-    color: "#8D89CA",
-    marginBottom: "10%",
-    marginTop: "10%",
+    fontSize: 24,
+    color: "#333",
+    marginBottom: 20,
   },
-  text: {
+  formContainer: {
+    width: "80%",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  label: {
     fontSize: 16,
-    marginBottom: 3,
-    color: "#8D89CA",
+    marginBottom: 5,
+    color: "#333",
     fontWeight: "bold",
   },
-  inputText: {
-    borderBottomWidth: 2,
+  input: {
+    borderWidth: 1,
     borderColor: "#8D89CA",
-    height: 30,
+    borderRadius: 5,
+    height: 40,
+    paddingHorizontal: 10,
   },
-  groupedElements: {
-    height: 70,
-    width: 250,
+  loginButton: {
+    backgroundColor: "#8D89CA",
+    paddingVertical: 12,
+    borderRadius: 5,
+    alignItems: "center",
+    marginTop: 10,
   },
-  button: {
-    backgroundColor: "#005691",
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  signupContainer: {
+    marginTop: 20,
   },
   helpText: {
-    marginTop: 20,
     fontSize: 16,
-    alignContent: "center",
-    justifyContent: "center",
+    color: "#333",
   },
 });

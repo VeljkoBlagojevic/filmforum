@@ -36,9 +36,9 @@ const MovieReviewStatistics: React.FC<MovieReviewStatisticsProps> = ({
   }, []);
 
   return (
-    <View style={styles.moviesReviewsContainer}>
-      <View style={styles.movieReviewsInfo}>
-        <Text style={styles.heading}>Reviews</Text>
+    <View style={styles.movieReviewsContainer}>
+      <Text style={styles.heading}>Reviews</Text>
+      <View style={styles.reviewList}>
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <Review
@@ -49,7 +49,9 @@ const MovieReviewStatistics: React.FC<MovieReviewStatisticsProps> = ({
             />
           ))
         ) : (
-          <Text>No reviews available yet. Check back later for updates!</Text>
+          <Text style={styles.noReviewText}>
+            No reviews available yet. Check back later for updates!
+          </Text>
         )}
       </View>
     </View>
@@ -57,16 +59,19 @@ const MovieReviewStatistics: React.FC<MovieReviewStatisticsProps> = ({
 };
 
 const styles = StyleSheet.create({
-  moviesReviewsContainer: {
-    flex: 1,
-  },
-  movieReviewsInfo: {
+  movieReviewsContainer: {
     marginBottom: 20,
   },
   heading: {
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  reviewList: {
+    marginTop: 10,
+  },
+  noReviewText: {
+    fontStyle: "italic",
   },
 });
 

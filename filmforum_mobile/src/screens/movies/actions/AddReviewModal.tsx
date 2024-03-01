@@ -26,7 +26,6 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({ movie }) => {
 
   const [content, setContent] = useState<string>("");
   const [rating, setRating] = useState<number>(0);
-
   const [open, setOpen] = useState<boolean>(false);
 
   const handleAddReview = async () => {
@@ -62,28 +61,43 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({ movie }) => {
   };
 
   return (
-    <View style={styles.groupedElements}>
-      <Button onPress={handleClickOpen} title="Add Review" />
-      <Modal visible={open} onDismiss={handleClose}>
-        <Text style={styles.headline}>Add Review</Text>
-        <View>
-          <Text>Content:</Text>
-          <TextInput
-            style={styles.inputText}
-            autoFocus
-            multiline
-            numberOfLines={4}
-            onChangeText={setContent}
-          />
-          <Rating
-            type="star"
-            startingValue={rating}
-            ratingCount={10}
-            onFinishRating={setRating}
-          />
+    <View style={styles.container}>
+      <Button onPress={handleClickOpen} title="Add Review" color="#8D89CA" />
+      <Modal visible={open} transparent={true} animationType="slide">
+        <View style={styles.modalContainer}>
+          <Text style={styles.headline}>Add Review</Text>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Content:</Text>
+            <TextInput
+              style={styles.inputText}
+              autoFocus
+              multiline
+              numberOfLines={4}
+              onChangeText={setContent}
+            />
+            <Text style={styles.label}>Rating:</Text>
+            <Rating
+              type="star"
+              startingValue={rating}
+              ratingCount={10}
+              onFinishRating={setRating}
+              imageSize={30}
+              style={{ paddingVertical: 10 }}
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Cancel"
+              onPress={handleClose}
+              color="#8D89CA"
+            />
+            <Button
+              title="Submit"
+              onPress={handleAddReview}
+              color="#8D89CA"
+            />
+          </View>
         </View>
-        <Button title="Cancel" onPress={handleClose} />
-        <Button title="Submit" onPress={handleAddReview} />
       </Modal>
     </View>
   );
@@ -92,43 +106,42 @@ const AddReviewModal: React.FC<AddReviewModalProps> = ({ movie }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    alignContent: "center",
+    justifyContent: "center",
     alignItems: "center",
-    height: 400,
-    marginTop: 20,
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    margin: 50,
+    padding: 20,
+    borderRadius: 10,
+    elevation: 5,
   },
   headline: {
     fontWeight: "bold",
     fontSize: 20,
     color: "#8D89CA",
-    marginBottom: "10%",
-    marginTop: "10%",
+    marginBottom: 10,
+    textAlign: "center",
   },
-  text: {
+  inputContainer: {
+    marginBottom: 20,
+  },
+  label: {
     fontSize: 16,
-    marginBottom: 3,
+    marginBottom: 5,
     color: "#8D89CA",
     fontWeight: "bold",
   },
   inputText: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderColor: "#8D89CA",
-    height: 30,
+    marginBottom: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 10,
   },
-  groupedElements: {
-    height: 70,
-    width: 250,
-  },
-  button: {
-    backgroundColor: "#005691",
-  },
-  helpText: {
-    marginTop: 20,
-    fontSize: 16,
-    alignContent: "center",
-    justifyContent: "center",
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
 });
 

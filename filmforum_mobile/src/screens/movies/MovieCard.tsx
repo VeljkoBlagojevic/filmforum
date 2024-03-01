@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native"; // Assuming you are using React Navigation for navigation
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { MovieDTO } from "../../domain/MovieDTO";
 
 interface MovieCardComponentProps {
@@ -22,7 +16,7 @@ export const MovieCard: React.FC<MovieCardComponentProps> = ({ movie }) => {
       onPress={() => navigation.navigate("MovieDetails", { movieID: movie.id })}
     >
       <Image
-        source={{ uri: movie.posterPath }} // Assuming posterPath is a URL
+        source={{ uri: movie.posterPath }}
         style={styles.moviePoster}
         resizeMode="cover"
       />
@@ -38,13 +32,17 @@ export const MovieCard: React.FC<MovieCardComponentProps> = ({ movie }) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: 350,
+    width: "100%",
     marginBottom: 20,
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+    elevation: 4,
   },
   moviePoster: {
     width: "100%",
     height: 200,
-    borderRadius: 10,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
   },
   movieInfo: {
     padding: 10,
@@ -52,9 +50,12 @@ const styles = StyleSheet.create({
   movieTitle: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#333333",
   },
   movieReleaseYear: {
     fontSize: 16,
-    color: "gray",
+    color: "#666666",
   },
 });
+
+export default MovieCard;

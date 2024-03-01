@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Image, Text, View } from "react-native";
+import { Alert, Image, Text, View, ScrollView, StyleSheet } from "react-native";
 import axios from "axios";
 import { UserDTO } from "../../domain/UserDTO";
 import { ReviewDTO } from "../../domain/ReviewDTO";
@@ -9,10 +9,9 @@ import { BASE_URL } from "../../constants/Urls";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MovieCard } from "../movies/MovieCard";
 import { Review } from "../reviews/Review";
-import { ScrollView } from "react-native-gesture-handler";
 import { Role } from "../../domain/Role";
 
-export const UserProfileScreen: React.FC = () => {
+const UserProfileScreen: React.FC = () => {
   const route = useRoute();
   const { userID } = route.params as { userID: number };
   const [user, setUser] = useState<UserDTO>();
@@ -83,47 +82,79 @@ export const UserProfileScreen: React.FC = () => {
   };
 
   return (
-    <ScrollView>
-      <View>
-        <View>
-          <Text>
-            {user?.firstname} {user?.lastname}
-          </Text>
-          <Text>{user?.username}</Text>
-          <Text>{user?.email}</Text>
-          <Image
-            source={{ uri: user?.profilePictureUri }}
-            style={{ width: 250, height: 250 }}
-          />
-        </View>
-        {user?.role === Role.USER && watchlist && (
-          <View>
-            <Text>Movies in WatchList:</Text>
-            <View>
-              {watchlist.movies.map((movie) => (
-                <View key={movie.id}>
-                  <MovieCard movie={movie} />
-                </View>
-              ))}
-            </View>
-          </View>
-        )}
-        {user?.role === Role.CRITIC && reviews && (
-          <View>
-            <Text>Reviews:</Text>
-            <View>
-              {reviews?.map((review) => (
-                <Review
-                  review={review}
-                  showAuthor={false}
-                  showMovie={true}
-                  key={review.id}
-                ></Review>
-              ))}
-            </View>
-          </View>
-        )}
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={styles.userContainer}>
+        <Text style={styles.userName}>
+          {user?.firstname} {user?.lastname}
+        </Text>
+        <Text style={styles.userInfo}>{user?.username}</Text>
+        <Text style={styles.userInfo}>{user?.email}</Text>
+        <Image
+          source={{ uri: user?.profilePictureUri }}
+          style={styles.userImage}
+        />
       </View>
+      {user?.role === Role.USER && watchlist && (
+        <View style={styles.watchlistContainer}>
+          <Text style={styles.sectionTitle}>Movies in WatchList:</Text>
+          {watchlist.movies.map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
+          ))}
+        </View>
+      )}
+      {user?.role === Role.CRITIC && reviews && (
+        <View style={styles.reviewsContainer}>
+          <Text style={styles.sectionTitle}>Reviews:</Text>
+          {reviews?.map((review) => (
+            <Review
+              review={review}
+              showAuthor={false}
+              showMovie={true}
+              key={review.id}
+            />
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  userContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  userInfo: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  userImage: {
+    width: 250,
+    height: 250,
+    borderRadius: 125,
+    marginBottom: 10,
+  },
+  watchlistContainer: {
+    marginBottom: 20,
+  },
+  reviewsContainer: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+});
+
+export default UserProfileScreen;

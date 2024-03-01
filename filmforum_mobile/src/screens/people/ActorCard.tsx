@@ -18,9 +18,26 @@ export const ActorCard: React.FC<ActorCardComponentProps> = ({ actor }) => {
 
 const styles = StyleSheet.create({
     actorCard: {
-        // Define styles for the container view
+        backgroundColor: '#DDDDDD',
+        borderRadius: 10,
+        marginBottom: 20,
+        padding: 5,
+        margin: 5,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     character: {
-        // Define styles for the character text
+        fontSize: 12,
+        fontWeight: 'bold',
+        marginTop: 5,
+        textAlign: 'center',
     },
 });
+
+export default ActorCard;
