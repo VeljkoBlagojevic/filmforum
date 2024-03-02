@@ -18,7 +18,7 @@ export const ActorCard: React.FC<ActorCardComponentProps> = ({ actor }) => {
 
 const styles = StyleSheet.create({
     actorCard: {
-        backgroundColor: '#DDDDDD',
+        backgroundColor: '#f0f0f0',
         borderRadius: 10,
         marginBottom: 20,
         padding: 5,

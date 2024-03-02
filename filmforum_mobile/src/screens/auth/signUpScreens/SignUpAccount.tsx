@@ -128,6 +128,7 @@ function SignUpAccount(props: Props) {
         <Text style={styles.label}>Role:</Text>
         <SelectDropdown
           data={roles}
+          defaultValue={roles[0]}
           onSelect={(selectedItem, index) => {
             setRole(selectedItem);
           }}
@@ -182,15 +183,20 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 15,
+    justifyContent: "center",
+    alignItems: "center",
   },
   selectButtonText: {
     color: "#8D89CA",
     fontWeight: "bold",
+    justifyContent: "center",
+    alignItems: "center",
   },
   dropdown: {
     borderWidth: 2,
     borderColor: "#8D89CA",
     borderRadius: 5,
+
   },
   dropdownRow: {
     paddingVertical: 10,

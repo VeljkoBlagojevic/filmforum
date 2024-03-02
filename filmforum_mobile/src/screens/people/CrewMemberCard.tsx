@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     padding: 5,
     margin: 5,
-    backgroundColor: "#DDDDDD",
+    backgroundColor: "#f0f0f0",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

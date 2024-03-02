@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -48,6 +48,15 @@ const UpdateMovieModal = ({ movie, setMovie }: UpdateMovieModalProps) => {
     }
   };
 
+  useEffect(() => {
+    if (movie) {
+      setOverview(movie.overview);
+      setTagline(movie.tagline);
+      setRuntime(String(movie.runtime));
+      setBudget(String(movie.budget));
+    }
+  }, [movie]);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -65,8 +74,10 @@ const UpdateMovieModal = ({ movie, setMovie }: UpdateMovieModalProps) => {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Overview:</Text>
             <TextInput
+              multiline
               style={styles.inputText}
               autoFocus
+              defaultValue={movie?.overview}
               value={overview}
               onChangeText={setOverview}
               placeholder="Overview"
@@ -75,12 +86,14 @@ const UpdateMovieModal = ({ movie, setMovie }: UpdateMovieModalProps) => {
             <TextInput
               style={styles.inputText}
               value={tagline}
+              defaultValue={movie?.tagline}
               onChangeText={setTagline}
               placeholder="Tagline"
             />
             <Text style={styles.label}>Budget:</Text>
             <TextInput
               style={styles.inputText}
+              defaultValue={String(movie?.budget)}
               value={budget}
               onChangeText={setBudget}
               placeholder="Budget"
@@ -89,6 +102,7 @@ const UpdateMovieModal = ({ movie, setMovie }: UpdateMovieModalProps) => {
             <Text style={styles.label}>Runtime:</Text>
             <TextInput
               style={styles.inputText}
+              defaultValue={String(movie?.runtime)}
               value={runtime}
               onChangeText={setRuntime}
               placeholder="Runtime"
@@ -96,11 +110,7 @@ const UpdateMovieModal = ({ movie, setMovie }: UpdateMovieModalProps) => {
             />
           </View>
           <View style={styles.buttonContainer}>
-            <Button
-              title="Cancel"
-              onPress={handleClose}
-              color="#8D89CA"
-            />
+            <Button title="Cancel" onPress={handleClose} color="#8D89CA" />
             <Button
               title="Update"
               onPress={handleConfirmUpdateMovie}

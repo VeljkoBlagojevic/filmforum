@@ -92,13 +92,13 @@ function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f0f0",
     justifyContent: "center",
     alignItems: "center",
   },
   stepperContainer: {
     width: "80%",
-    height: 600,
+    height: 700,
     margin: 20,
     borderRadius: 10,
     shadowColor: "#000",
