@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MovieCard } from "../movies/MovieCard";
 import { Review } from "../reviews/Review";
 import { Role } from "../../domain/Role";
+import { Buffer } from "buffer";
 
 const UserProfileScreen: React.FC = () => {
   const route = useRoute();
@@ -17,6 +18,31 @@ const UserProfileScreen: React.FC = () => {
   const [user, setUser] = useState<UserDTO>();
   const [reviews, setReviews] = useState<ReviewDTO[]>([]);
   const [watchlist, setWatchlist] = useState<WatchListDTO>();
+  const [profilePicture, setProfilePicture] = useState("");
+  const profilePictureUri = user?.profilePictureUri;
+
+  const getProfilePicture = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.get(
+        `${BASE_URL}users/${user?.id}/profilePicture`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "arraybuffer",
+        }
+      );
+
+      const buffer = Buffer.from(response.data, "binary");
+      const base64String = buffer.toString("base64");
+      setProfilePicture(`data:image/jpeg;base64,${base64String}`);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getProfilePicture();
+  }, [profilePictureUri]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -89,10 +115,7 @@ const UserProfileScreen: React.FC = () => {
         </Text>
         <Text style={styles.userInfo}>{user?.username}</Text>
         <Text style={styles.userInfo}>{user?.email}</Text>
-        <Image
-          source={{ uri: user?.profilePictureUri }}
-          style={styles.userImage}
-        />
+        <Image source={{ uri: profilePicture }} style={styles.userImage} />
       </View>
       {user?.role === Role.USER && watchlist && (
         <View style={styles.watchlistContainer}>

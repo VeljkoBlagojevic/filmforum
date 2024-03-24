@@ -54,39 +54,30 @@ function SignUp() {
     <SignUpSubmit setImage={(image) => setImage(image)} />,
   ];
 
-
   const uploadProfilePicture = async () => {
-    const token = await AsyncStorage.getItem("token") ?? '';
+    //call backend API
+    const uriParts = image?.uri.split(".");
+    const fileType = uriParts ? uriParts[uriParts.length - 1] : "jpeg";
+    const response = await fetch(image?.uri ?? "");
+    console.log("Response: " + response);
+    const blob = await response.blob();
+    const formData = new FormData();
+    formData.append("imageFile", blob, image?.uri);
 
-    const headers = new Headers();
-    headers.append('Authorization', token);
-    headers.append('Content-Type', 'multipart/form-data');
-
-    const uri = image?.uri ?? '';
-    const fileName = image?.fileName ?? '';
-
-    let formData = new FormData();
-    
-    fetch(uri)
-    .then(response => response.blob())
-    .then(blob => {
-      formData.append('imageFile', blob, fileName);
-
-      fetch(`${BASE_URL}users/profilePicture`, {
-        method: "POST",
-        body: formData,
-        headers: headers,
+    axios
+      .post(`${BASE_URL}users/profilePicture`, formData, {
+        headers: {
+          Authorization: `Bearer ${await AsyncStorage.getItem("token")}`,
+        },
       })
-      .then(response => response.json())
-      .then(response => {
-        console.log("Upload success", response);
+      .then((response) => {
+        console.log(response);
       })
-      .catch(error => {
-        console.log(error);
-        alert("Upload failed!" + error);
+      .catch((error) => {
+        console.log("Error ", error);
+        console.log("Error Message: ", error.message);
       });
-    });
-  }
+  };
 
   const handleFinish = async () => {
     const registerRequest: ReqisterRequest = {
@@ -95,12 +86,15 @@ function SignUp() {
       email: email,
       password: password,
       username: username,
-      role: role
+      role: role,
     };
-      const response = await axios.post(`${BASE_URL}auth/register`, registerRequest);
-      await AsyncStorage.setItem("token", response.data.token);
-      await uploadProfilePicture();
-      navigation.navigate("LogIn");
+    const response = await axios.post(
+      `${BASE_URL}auth/register`,
+      registerRequest
+    );
+    await AsyncStorage.setItem("token", response.data.token);
+    await uploadProfilePicture();
+    navigation.navigate("LogIn");
   };
 
   return (

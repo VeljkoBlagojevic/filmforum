@@ -10,6 +10,9 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { useValidInformation } from "../../../services/api";
+import axios from "axios";
+import { BASE_URL } from "../../../constants/Urls";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Props {
   setImage: (value: ImagePicker.ImagePickerAsset) => void;
@@ -37,7 +40,7 @@ function SignUpSubmit(props: Props) {
     }
 
     const imageAsset = result.assets[0];
-
+    console.log("vise srece drugi put");
     setImage(imageAsset);
     props.setImage(imageAsset);
   };

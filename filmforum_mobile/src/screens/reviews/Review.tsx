@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import { ReviewDTO } from "../../domain/ReviewDTO";
 import { useNavigation } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
 import { MovieCard } from "../movies/MovieCard";
+import { BASE_URL } from "../../constants/Urls";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { Buffer } from "buffer";
 
 interface ReviewComponentProps {
   review: ReviewDTO;
@@ -17,6 +21,33 @@ export const Review: React.FC<ReviewComponentProps> = ({
   showMovie,
 }) => {
   const navigation = useNavigation();
+  const [profilePicture, setProfilePicture] = useState("");
+  const profilePictureUri = review?.author?.profilePictureUri;
+
+  const getProfilePicture = async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const response = await axios.get(
+        `${BASE_URL}users/${review.author.id}/profilePicture`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "arraybuffer", // Specify the response type as arraybuffer
+        }
+      );
+
+      const buffer = Buffer.from(response.data, "binary"); // Create a buffer from arraybuffer data
+      const base64String = buffer.toString("base64"); // Convert buffer to base64 string
+      setProfilePicture(`data:image/jpeg;base64,${base64String}`);
+    } catch (error) {
+      console.error("Error fetching profile picture:", error);
+    }
+  };
+
+  useEffect(() => {
+    getProfilePicture();
+  }, [profilePictureUri]);
 
   return (
     <View style={styles.reviewContainer}>
@@ -40,10 +71,12 @@ export const Review: React.FC<ReviewComponentProps> = ({
             navigation.navigate("UserProfile", { userID: review.author.id })
           }
         >
-          <Image
-            source={{ uri: review?.author?.profilePictureUri }}
-            style={styles.authorImage}
-          />
+          {profilePicture && (
+            <Image
+              source={{ uri: profilePicture }}
+              style={styles.authorImage}
+            />
+          )}
           <Text style={styles.authorName}>
             Author: {review.author.firstname} {review.author.lastname}
           </Text>

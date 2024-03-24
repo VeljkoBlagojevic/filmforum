@@ -58,9 +58,9 @@ public class UserController {
         return imageName;
     }
 
-    @GetMapping("/profilePicture")
-    public byte[] getImage() throws IOException {
-        String profilePictureUri = userService.getCurrentlyLoggedInUser().getProfilePictureUri();
+    @GetMapping("/{userId}/profilePicture")
+    public byte[] getImage(@PathVariable Long userId) throws IOException {
+        String profilePictureUri = userService.getById(userId).getProfilePictureUri();
         return imageService.getImage(IMAGE_DIRECTORY, profilePictureUri);
     }
 
