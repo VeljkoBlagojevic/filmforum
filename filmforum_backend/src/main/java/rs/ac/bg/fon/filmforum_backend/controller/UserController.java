@@ -4,9 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import rs.ac.bg.fon.filmforum_backend.domain.User;
 import rs.ac.bg.fon.filmforum_backend.dto.UserDTO;
 import rs.ac.bg.fon.filmforum_backend.dto.mapper.UserMapper;
+import rs.ac.bg.fon.filmforum_backend.service.ImageService;
 import rs.ac.bg.fon.filmforum_backend.service.UserService;
+
+import java.io.IOException;
 
 @CrossOrigin
 @RestController
@@ -15,7 +20,9 @@ import rs.ac.bg.fon.filmforum_backend.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final ImageService imageService;
     private final UserMapper userMapper;
+    private static final String IMAGE_DIRECTORY = "src/main/resources/static/images";
 
     @GetMapping
     public Page<UserDTO> getAllUsers(Pageable pageable) {
@@ -40,6 +47,21 @@ public class UserController {
     @GetMapping("/otherUsers")
     public Page<UserDTO> getOtherUsers(Pageable pageable) {
         return userService.getOtherUsers(pageable).map(userMapper::mapToDTO);
+    }
+
+    @PostMapping("/profilePicture")
+    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+        User currentlyLoggedInUser = userService.getCurrentlyLoggedInUser();
+        String imageName = imageService.saveImageToStorage(IMAGE_DIRECTORY, imageFile, currentlyLoggedInUser);
+        currentlyLoggedInUser.setProfilePictureUri(imageName);
+        userService.save(currentlyLoggedInUser);
+        return imageName;
+    }
+
+    @GetMapping("/profilePicture")
+    public byte[] getImage() throws IOException {
+        String profilePictureUri = userService.getCurrentlyLoggedInUser().getProfilePictureUri();
+        return imageService.getImage(IMAGE_DIRECTORY, profilePictureUri);
     }
 
 

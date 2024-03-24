@@ -9,6 +9,8 @@ import { IsValidContext } from "../../services/api";
 import { Role } from "../../domain/Role";
 import axios from "axios";
 import { BASE_URL } from "../../constants/Urls";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ImagePickerAsset } from "expo-image-picker";
 
 interface ReqisterRequest {
   firstname: string;
@@ -17,7 +19,6 @@ interface ReqisterRequest {
   username: string;
   password: string;
   role: Role;
-  profilePictureUri: string;
 }
 
 function SignUp() {
@@ -31,7 +32,7 @@ function SignUp() {
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [surname, setSurname] = useState<string>("");
-  const [image, setImage] = useState<any>(null);
+  const [image, setImage] = useState<ImagePickerAsset>();
   const [role, setRole] = useState<Role>(Role.USER);
 
   useEffect(() => {
@@ -53,6 +54,40 @@ function SignUp() {
     <SignUpSubmit setImage={(image) => setImage(image)} />,
   ];
 
+
+  const uploadProfilePicture = async () => {
+    const token = await AsyncStorage.getItem("token") ?? '';
+
+    const headers = new Headers();
+    headers.append('Authorization', token);
+    headers.append('Content-Type', 'multipart/form-data');
+
+    const uri = image?.uri ?? '';
+    const fileName = image?.fileName ?? '';
+
+    let formData = new FormData();
+    
+    fetch(uri)
+    .then(response => response.blob())
+    .then(blob => {
+      formData.append('imageFile', blob, fileName);
+
+      fetch(`${BASE_URL}users/profilePicture`, {
+        method: "POST",
+        body: formData,
+        headers: headers,
+      })
+      .then(response => response.json())
+      .then(response => {
+        console.log("Upload success", response);
+      })
+      .catch(error => {
+        console.log(error);
+        alert("Upload failed!" + error);
+      });
+    });
+  }
+
   const handleFinish = async () => {
     const registerRequest: ReqisterRequest = {
       firstname: name,
@@ -60,10 +95,11 @@ function SignUp() {
       email: email,
       password: password,
       username: username,
-      role: role,
-      profilePictureUri: image.uri
+      role: role
     };
-      await axios.post(`${BASE_URL}auth/register`, registerRequest);
+      const response = await axios.post(`${BASE_URL}auth/register`, registerRequest);
+      await AsyncStorage.setItem("token", response.data.token);
+      await uploadProfilePicture();
       navigation.navigate("LogIn");
   };
 

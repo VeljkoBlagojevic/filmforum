@@ -37,4 +37,8 @@ public class UserService {
     public Page<User> getOtherUsers(Pageable pageable) {
         return userRepository.findByUsernameNot(getCurrentlyLoggedInUser().getUsername(), pageable);
     }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -7,42 +7,39 @@ import {
   Image,
   Button,
   Alert,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useValidInformation } from '../../../services/api';
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { useValidInformation } from "../../../services/api";
 
 interface Props {
-  setImage: (value: any) => void;
+  setImage: (value: ImagePicker.ImagePickerAsset) => void;
 }
 
 function SignUpSubmit(props: Props) {
-  const [image, setImage] = useState<any>(null);
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset>();
   const { value, setValue } = useValidInformation();
 
   const uploadPhoto = async () => {
-    let permisiion = await ImagePicker.requestCameraPermissionsAsync();
+    let permission = await ImagePicker.requestCameraPermissionsAsync();
 
-    if (!permisiion.granted) {
-      Alert.alert('Sorry, we need camera roll permissions to make this work!');
+    if (!permission.granted) {
+      Alert.alert("Sorry, we need camera roll permissions to make this work!");
       return;
     }
 
-    let result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-    });
+    let result: ImagePicker.ImagePickerResult =
+      await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+      });
 
     if (result.canceled) {
       return;
     }
-    const { uri } = result.assets[0];
 
-    const img = {
-      uri: uri,
-      type: 'image/jpeg',
-      name: "photo.jpg",
-    };
-    setImage(img);
-    props.setImage(img);
+    const imageAsset = result.assets[0];
+
+    setImage(imageAsset);
+    props.setImage(imageAsset);
   };
 
   useEffect(() => {
@@ -54,9 +51,16 @@ function SignUpSubmit(props: Props) {
       <Text style={styles.headline}>One last step...</Text>
       <View style={styles.profileImage}>
         {image !== null ? (
-          <Image source={{ uri: image.uri }} style={styles.image} />
+          <Image
+            source={{
+              uri: image?.uri,
+              height: image?.height,
+              width: image?.width,
+            }}
+            style={styles.image}
+          />
         ) : (
-          <Image source={require('./me.png')} style={styles.image} />
+          <Image source={require("./me.png")} style={styles.image} />
         )}
       </View>
 
@@ -67,28 +71,28 @@ function SignUpSubmit(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "space-evenly",
+    alignContent: "center",
+    alignItems: "center",
     height: 400,
     marginTop: 20,
     paddingTop: 10,
   },
   headline: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 20,
-    color: '#8D89CA',
+    color: "#8D89CA",
   },
   text: {
     fontSize: 16,
-    color: '#8D89CA',
-    fontWeight: 'bold',
+    color: "#8D89CA",
+    fontWeight: "bold",
     marginBottom: 3,
   },
   inputText: {
     borderBottomWidth: 2,
-    borderColor: '#8D89CA',
+    borderColor: "#8D89CA",
     height: 30,
   },
   groupedElements: {
@@ -98,10 +102,10 @@ const styles = StyleSheet.create({
   profileImage: {
     height: 150,
     width: 150,
-    alignSelf: 'center',
-    margin: '2%',
+    alignSelf: "center",
+    margin: "2%",
     borderRadius: 100,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
     flex: 1,
@@ -109,13 +113,13 @@ const styles = StyleSheet.create({
     height: undefined,
   },
   buttonUpload: {
-    backgroundColor: '#005691',
-    height: '7%',
+    backgroundColor: "#005691",
+    height: "7%",
     width: 200,
-    alignSelf: 'center',
+    alignSelf: "center",
     borderRadius: 20,
-    flexDirection: 'column',
-    marginBottom: '3%',
+    flexDirection: "column",
+    marginBottom: "3%",
   },
 });
 export default SignUpSubmit;

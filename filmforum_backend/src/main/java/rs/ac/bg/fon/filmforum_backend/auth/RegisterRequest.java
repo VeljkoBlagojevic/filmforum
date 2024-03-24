@@ -27,5 +27,4 @@ public class RegisterRequest {
   private String password;
   @NotNull(message = "Role cannot be null")
   private Role role;
-  private String profilePictureUri;
 }
